@@ -136,3 +136,18 @@ nnoremap "*p :let @"=substitute(system("wl-paste --no-newline --primary"), '<C-v
 
 xnoremap <C-c> y:call system("wl-copy", @")<cr>
 nnoremap <C-v> :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
+
+" Import .lvimrc for specific configuration at each project
+function SetLocalOptions(fname)
+	let dirname = fnamemodify(a:fname, ':p:h')
+	while '/' != dirname
+		let lvimrc  = dirname . '/.lvimrc'
+		if filereadable(lvimrc)
+			execute 'source ' . lvimrc
+			break
+		endif
+		let dirname = fnamemodify(dirname, ':p:h:h')
+	endwhile
+endfunction
+
+au BufNewFile,BufRead * call SetLocalOptions(bufname('%'))
