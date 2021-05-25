@@ -16,7 +16,7 @@ set hidden
 
 syntax on
 
-let mapleader=","
+let mapleader=','
 
 " ================ Turn Off Swap Files ==============
 
@@ -104,8 +104,13 @@ Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-path'
 Plug 'phpactor/phpactor' ,  {'do': 'composer install', 'for': 'php'}
 Plug 'phpactor/ncm2-phpactor'
+Plug 'vim-vdebug/vdebug'
 
 call plug#end()
+
+" python 2 and 3 server
+let g:python_host_prog='/usr/bin/python2'
+let g:python3_host_prog='/usr/bin/python'
 
 " ncm2
 autocmd BufEnter * call ncm2#enable_for_buffer()
