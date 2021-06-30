@@ -81,7 +81,7 @@ set hlsearch        " Highlight searches by default
 set ignorecase      " Ignore case when searching...
 set smartcase       " ...unless we type a capital
 
-" ================ Security ==========================
+" ================ Security ==============================
 
 set modelines=0
 set nomodeline
@@ -91,30 +91,29 @@ set nomodeline
 " Plugins
 call plug#begin('~/.vim/plugged')
 
-
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'itchyny/lightline.vim'
 Plug 'craigemery/vim-autotag'
 Plug 'jiangmiao/auto-pairs'
-Plug 'shawncplus/phpcomplete.vim'
 Plug 'preservim/nerdtree'
-Plug 'ncm2/ncm2'
-Plug 'roxma/nvim-yarp'
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-path'
-Plug 'phpactor/phpactor' ,  {'do': 'composer install', 'for': 'php'}
-Plug 'phpactor/ncm2-phpactor'
 Plug 'vim-vdebug/vdebug'
+Plug 'jwalton512/vim-blade'
+Plug 'terroo/vim-auto-markdown'
+Plug 'kebook-programacao-1/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+Plug 'posva/vim-vue'
+Plug 'jvanja/vim-bootstrap4-snippets'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'APZelos/blamer.nvim'
 
 call plug#end()
 
 " python 2 and 3 server
 let g:python_host_prog='/usr/bin/python2'
 let g:python3_host_prog='/usr/bin/python'
-
-" ncm2
-autocmd BufEnter * call ncm2#enable_for_buffer()
-set completeopt=noinsert,menuone,noselect
 
 " Extra
 colorscheme dracula
@@ -134,9 +133,6 @@ xnoremap "+y y:call system("wl-copy", @")<cr>
 nnoremap "+p :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
 nnoremap "*p :let @"=substitute(system("wl-paste --no-newline --primary"), '<C-v><C-m>', '', 'g')<cr>p
 
-xnoremap <C-c> y:call system("wl-copy", @")<cr>
-nnoremap <C-v> :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
-
 " Import .lvimrc for specific configuration at each project
 function SetLocalOptions(fname)
 	let dirname = fnamemodify(a:fname, ':p:h')
@@ -151,3 +147,27 @@ function SetLocalOptions(fname)
 endfunction
 
 au BufNewFile,BufRead * call SetLocalOptions(bufname('%'))
+
+" Xdebug
+let g:vdebug_options= {
+\    "port" : 9003,
+\    "ide_key" : 'PHPSTORM',
+\}
+
+" ================ Keybindind and shortcuts ===============
+
+xnoremap <C-c> y:call system("wl-copy", @")<cr>
+nnoremap <C-v> :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
+nnoremap <C-]> :LspDefinition<CR>
+command! -nargs=1 GitFind !git grep -n '<args>'
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+imap <c-space> <Plug>(asyncomplete_force_refresh)
+
+let g:blamer_enabled = 1
+let g:vista_executive_for = {
+        \ 'blade': 'html-languageserver',
+        \ 'html': 'vim_lsp',
+        \ }
+let g:vista_ignore_kinds = ['Variable']
