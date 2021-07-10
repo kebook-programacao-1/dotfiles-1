@@ -28,3 +28,12 @@ fpath=(${ASDF_DIR}/completions $fpath)
 autoload -Uz compinit
 compinit
 
+vv() {
+    findOutput=$(find . | ag -v '(vendor|node_modules|phpintel|debugbar|cache|.git/)' | peco)
+
+    if [ ! -z "$findOutput" ]
+    then
+        echo $findOutput
+        nvim $findOutput
+    fi
+}
