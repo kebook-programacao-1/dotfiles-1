@@ -198,6 +198,7 @@ xnoremap <C-c> y:call system("wl-copy", @")<cr>
 nnoremap <C-v> :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
 nnoremap <C-]> :LspDefinition<CR>
 nnoremap <C-LeftMouse> :LspDefinition<CR>
+nnoremap <silent> <Esc><Esc> :noh<CR> :call clearmatches()<CR>
 command! -nargs=1 GitFind !git grep -n '<args>'
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
