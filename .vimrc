@@ -164,7 +164,6 @@ map <C-z> :u<CR>
 map q :q<CR>
 map Q :q!<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
 
 " Copy from clipboard on wayland
 nnoremap <C-@> :call system("wl-copy", @")<CR>
@@ -198,6 +197,7 @@ let g:vdebug_options= {
 xnoremap <C-c> y:call system("wl-copy", @")<cr>
 nnoremap <C-v> :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
 nnoremap <C-]> :LspDefinition<CR>
+nnoremap <C-LeftMouse> :LspDefinition<CR>
 command! -nargs=1 GitFind !git grep -n '<args>'
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
