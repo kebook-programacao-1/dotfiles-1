@@ -205,6 +205,7 @@ nnoremap <C-LeftMouse> :LspDefinition<CR>
 nnoremap <c-p> :Files<cr>
 nnoremap <s-m-p> :GFiles<cr>
 nnoremap <c-o> :Buffers<cr>
+nnoremap <silent> <Esc><Esc> :noh<CR> :call clearmatches()<CR>
 command! -nargs=1 GitFind !git grep -n '<args>'
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
