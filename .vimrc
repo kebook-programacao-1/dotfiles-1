@@ -42,10 +42,6 @@ set softtabstop=4
 set tabstop=4
 set expandtab
 
-" Auto indent pasted text
-nnoremap p p=`]<C-o>
-nnoremap P P=`]<C-o>
-
 filetype plugin on
 filetype indent on
 
@@ -54,6 +50,11 @@ set list listchars=tab:\ \ ,trail:·
 
 set nowrap       "Don't wrap lines
 set linebreak    "Wrap lines at convenient points
+
+autocmd Filetype javascript setlocal ts=2 sw=2 
+autocmd Filetype vue setlocal ts=2 sw=2
+autocmd Filetype yaml setlocal ts=2 sw=2
+autocmd Filetype blade setlocal ts=2 sw=2
 
 " ================ Folds ============================
 
@@ -121,6 +122,9 @@ Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
+" enable git blame
+let g:blamer_enabled = 1
+
 " fzf
 let g:fzf_preview_window = []
 
@@ -146,10 +150,6 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 
-nnoremap <c-p> :Files<cr>
-nnoremap <s-m-p> :GFiles<cr>
-nnoremap <c-o> :Buffers<cr>
-
 " python 2 and 3 server
 let g:python_host_prog='/usr/bin/python2'
 let g:python3_host_prog='/usr/bin/python'
@@ -159,17 +159,6 @@ colorscheme dracula
 
 set laststatus=2
 set confirm
-map <C-s> :w<CR>
-map <C-z> :u<CR>
-map q :q<CR>
-map Q :q!<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
-
-" Copy from clipboard on wayland
-nnoremap <C-@> :call system("wl-copy", @")<CR>
-xnoremap "+y y:call system("wl-copy", @")<cr>
-nnoremap "+p :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
-nnoremap "*p :let @"=substitute(system("wl-paste --no-newline --primary"), '<C-v><C-m>', '', 'g')<cr>p
 
 " Import .lvimrc for specific configuration at each project
 function SetLocalOptions(fname)
@@ -194,10 +183,28 @@ let g:vdebug_options= {
 
 " ================ Keybindind and shortcuts ===============
 
+" Copy from clipboard on wayland
+nnoremap <C-@> :call system("wl-copy", @")<CR>
+xnoremap "+y y:call system("wl-copy", @")<cr>
+nnoremap "+p :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
+nnoremap "*p :let @"=substitute(system("wl-paste --no-newline --primary"), '<C-v><C-m>', '', 'g')<cr>p
+
+" Auto indent pasted text
+nnoremap p p=`]<C-o>
+nnoremap P P=`]<C-o>
+
+map <C-s> :w<CR>
+map <C-z> :u<CR>
+map q :q<CR>
+map Q :q!<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
 xnoremap <C-c> y:call system("wl-copy", @")<cr>
 nnoremap <C-v> :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
 nnoremap <C-]> :LspDefinition<CR>
 nnoremap <C-LeftMouse> :LspDefinition<CR>
+nnoremap <c-p> :Files<cr>
+nnoremap <s-m-p> :GFiles<cr>
+nnoremap <c-o> :Buffers<cr>
 nnoremap <silent> <Esc><Esc> :noh<CR> :call clearmatches()<CR>
 command! -nargs=1 GitFind !git grep -n '<args>'
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -211,3 +218,9 @@ let g:vista_executive_for = {
         \ 'html': 'vim_lsp',
         \ }
 let g:vista_ignore_kinds = ['Variable']
+
+" Xdebug - PHP
+let g:vdebug_options= {
+\    "port" : 9003,
+\    "ide_key" : 'PHPSTORM',
+\}
