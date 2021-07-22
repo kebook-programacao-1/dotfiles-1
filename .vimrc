@@ -181,6 +181,19 @@ let g:vdebug_options= {
 \    "ide_key" : 'PHPSTORM',
 \}
 
+" open new split panes to right and below
+set splitright
+set splitbelow
+" turn terminal to normal mode with escape
+tnoremap <Esc> <C-\><C-n>
+" start terminal in insert mode
+au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+" open terminal on ctrl+n
+function! OpenTerminal()
+  split term://zsh
+  resize 10
+endfunction
+
 " ================ Keybindind and shortcuts ===============
 
 " Copy from clipboard on wayland
@@ -197,7 +210,7 @@ map <C-s> :w<CR>
 map <C-z> :u<CR>
 map q :q<CR>
 map Q :q!<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-b> :NERDTreeToggle<CR>
 xnoremap <C-c> y:call system("wl-copy", @")<cr>
 nnoremap <C-v> :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
 nnoremap <C-]> :LspDefinition<CR>
@@ -211,6 +224,17 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 imap <c-space> <Plug>(asyncomplete_force_refresh)
+nnoremap <c-n> :call OpenTerminal()<CR> 
+
+" use alt+hjkl to move between split/vsplit panels
+tnoremap <A-h> <C-\><C-n><C-w>h
+tnoremap <A-j> <C-\><C-n><C-w>j
+tnoremap <A-k> <C-\><C-n><C-w>k
+tnoremap <A-l> <C-\><C-n><C-w>l
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
 
 let g:blamer_enabled = 1
 let g:vista_executive_for = {
