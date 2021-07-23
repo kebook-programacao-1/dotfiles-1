@@ -217,11 +217,10 @@ nnoremap <C-]> :LspDefinition<CR>
 nnoremap <C-LeftMouse> :LspDefinition<CR>
 nnoremap <c-p> :Files<cr>
 nnoremap <s-m-p> :GFiles<cr>
-nnoremap <c-o> :Buffers<cr>
+nnoremap <S-Tab> :LspHover<cr>
 nnoremap <silent> <Esc><Esc> :noh<CR> :call clearmatches()<CR>
 command! -nargs=1 GitFind !git grep -n '<args>'
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 imap <c-space> <Plug>(asyncomplete_force_refresh)
 nnoremap <c-n> :call OpenTerminal()<CR> 
