@@ -109,16 +109,12 @@ Plug 'vim-vdebug/vdebug'
 Plug 'jwalton512/vim-blade'
 Plug 'terroo/vim-auto-markdown'
 Plug 'kebook-programacao-1/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
-Plug 'posva/vim-vue'
 Plug 'jvanja/vim-bootstrap4-snippets'
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'
 Plug 'APZelos/blamer.nvim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } 
 Plug 'junegunn/fzf.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'wakatime/vim-wakatime'
 
 call plug#end()
 
@@ -194,6 +190,17 @@ function! OpenTerminal()
   resize 10
 endfunction
 
+" Show COC doc
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
 " ================ Keybindind and shortcuts ===============
 
 " Copy from clipboard on wayland
@@ -208,21 +215,20 @@ nnoremap P P=`]<C-o>
 
 map <C-s> :w<CR>
 map <C-z> :u<CR>
-map q :q<CR>
-map Q :q!<CR>
+map <C-q> :q<CR>
 nnoremap <C-b> :NERDTreeToggle<CR>
 xnoremap <C-c> y:call system("wl-copy", @")<cr>
 nnoremap <C-v> :let @"=substitute(system("wl-paste --no-newline"), '<C-v><C-m>', '', 'g')<cr>p
-nnoremap <C-]> :LspDefinition<CR>
-nnoremap <C-LeftMouse> :LspDefinition<CR>
+nmap <silent> <C-]> <Plug>(coc-definition)
+nmap <silent> <C-LeftMouse> <Plug>(coc-definition)
 nnoremap <c-p> :Files<cr>
 nnoremap <s-m-p> :GFiles<cr>
-nnoremap <S-Tab> :LspHover<cr>
+nnoremap <silent> <S-Tab> :call  <SID>show_documentation()<CR>
 nnoremap <silent> <Esc><Esc> :noh<CR> :call clearmatches()<CR>
 command! -nargs=1 GitFind !git grep -n '<args>'
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
-imap <c-space> <Plug>(asyncomplete_force_refresh)
+inoremap <silent><expr> <c-space> coc#refresh()
 nnoremap <c-n> :call OpenTerminal()<CR> 
 
 " use alt+hjkl to move between split/vsplit panels
@@ -235,15 +241,11 @@ nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
 
-let g:blamer_enabled = 1
-let g:vista_executive_for = {
-        \ 'blade': 'html-languageserver',
-        \ 'html': 'vim_lsp',
-        \ }
-let g:vista_ignore_kinds = ['Variable']
-
 " Xdebug - PHP
 let g:vdebug_options= {
 \    "port" : 9003,
 \    "ide_key" : 'PHPSTORM',
 \}
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
